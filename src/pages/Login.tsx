@@ -30,10 +30,13 @@ const Login = () => {
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
-      const res = await authApi.register({
+      const tokenResponse = await authApi.login({
         email: data.email,
         password: data.password,
       });
+
+      localStorage.setItem("accessToken", tokenResponse.data.accessToken);
+      
 
       showToast(ToastStatus.Success, "Success", "Login successfully!");
 
