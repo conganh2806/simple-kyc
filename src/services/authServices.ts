@@ -4,15 +4,16 @@ import {
   type LoginRequest,
   type LoginResponse,
   type RegisterRequest,
+  type UserProfile,
 } from "../models/auth";
 
 export const authApi = {
-  login: (data: LoginRequest) => {
-    return axiosClient.post<LoginResponse>("/auth/login", data);
+  getProfile: () => {
+    return axiosClient.get<UserProfile>("/auth/profile");
   },
 
-  getProfile: () => {
-    return axiosClient.get("/auth/profile");
+  login: (data: LoginRequest) => {
+    return axiosClient.post<LoginResponse>("/auth/login", data);
   },
 
   register: (data: RegisterRequest) => {

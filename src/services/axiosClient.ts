@@ -8,11 +8,11 @@ const axiosClient = axios.create({
   timeout: 10000,
 });
 
-axios.interceptors.request.use(
+axiosClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const accessToken = localStorage.getItem("accessToken");
-
-    if (accessToken && config.headers) {
+    console.log(`${accessToken}`);
+    if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
 
@@ -23,7 +23,7 @@ axios.interceptors.request.use(
   }
 );
 
-axios.interceptors.response.use(
+axiosClient.interceptors.response.use(
   (response) => {
     return response;
   },

@@ -1,4 +1,5 @@
 import Home from "../pages/Home";
+import Kyc from "../pages/Kyc";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 
@@ -24,9 +25,11 @@ const publicRoute: Record<string, RouteConfig> = {
   },
 };
 
-// const privateRoutes: RouteConfig[] = [
-//   { path: "/dashboard", component: Dashboard, isPrivate: true },
-//   { path: "/profile", component: Dashboard, isPrivate: true }, // Ví dụ
-// ];
+const privateRoute: Record<string, RouteConfig> = {
+  kyc: {
+    path: "/kyc",
+    component: Kyc,
+  },
+};
 
-export { publicRoute };
+export { publicRoute, privateRoute };
