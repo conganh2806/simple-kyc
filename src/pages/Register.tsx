@@ -4,12 +4,15 @@ import Input from "../components/Input";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "primereact/checkbox";
-import { authApi } from "../services/authServices";
 import { Link, useNavigate } from "react-router-dom";
-import { ProgressSpinner } from "primereact/progressspinner";
 import { publicRoute } from "../routes/routes";
 import { useToast } from "../contexts/ToastContext";
 import { ToastStatus } from "../constants/Toast";
+import { useAppDispatch } from "../app/store";
+import { useEffect } from "react";
+import { registerUser, resetAuthStatus } from "../features/auth/authSlice";
+import { type RootState } from "../app/store";
+import { useSelector } from "react-redux";
 
 const registerSchema = z
   .object({
@@ -29,12 +32,18 @@ type RegisterFormInputs = z.infer<typeof registerSchema>;
 
 const Register = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const { isLoading, error, isSuccess } = useSelector(
+    (state: RootState) => state.auth
+  );
+
   const { showToast } = useToast();
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isValid },
   } = useForm<RegisterFormInputs>({
     resolver: zodResolver(registerSchema),
     mode: "onChange",
@@ -43,21 +52,32 @@ const Register = () => {
     },
   });
 
-  const onSubmit = async (data: RegisterFormInputs) => {
-    try {
-      await authApi.register({
-        email: data.email,
-        password: data.password,
-      });
+  useEffect(() => {
+    if (isSuccess) {
+      showToast(
+        ToastStatus.Success,
+        "Success",
+        "Registration successful! Please login."
+      );
 
-      showToast(ToastStatus.Success, "Success", "Register successfully!", 2000);
+      dispatch(resetAuthStatus());
 
       navigate("/login");
-    } catch (error: any) {
-      console.log(error);
-      const errorMessage = error.response?.data?.message || "Register failed";
-      showToast(ToastStatus.Error, "Error", `${errorMessage}`);
     }
+
+    if (error) {
+      showToast(ToastStatus.Error, "Registration Failed", error);
+      dispatch(resetAuthStatus());
+    }
+  }, [isSuccess, error, dispatch, navigate, showToast]);
+
+  const onSubmit = async (data: RegisterFormInputs) => {
+    dispatch(
+      registerUser({
+        email: data.email,
+        password: data.password,
+      })
+    );
   };
 
   return (
@@ -126,11 +146,7 @@ const Register = () => {
              hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 font-semibold
              disabled:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {isSubmitting ? (
-              <ProgressSpinner className="w-full h-full text-white" />
-            ) : (
-              "Create account"
-            )}
+            {isLoading ? "Creating Account..." : "Create account"}
           </button>
         </form>
         <p className="mt-4 text-sm text-center text-gray-600">

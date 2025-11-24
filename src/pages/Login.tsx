@@ -2,12 +2,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import Input from "../components/Input";
-import { Link, useNavigate } from "react-router-dom";
-import { ProgressSpinner } from "primereact/progressspinner";
-import { authApi } from "../services/authServices";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { publicRoute } from "../routes/routes";
 import { useToast } from "../contexts/ToastContext";
 import { ToastStatus } from "../constants/Toast";
+import { useAppDispatch, useAppSelector } from "../app/store";
+import { useEffect } from "react";
+import { loginUser, resetAuthStatus } from "../features/auth/authSlice";
 
 const loginSchema = z.object({
   email: z.email({ pattern: z.regexes.email }),
@@ -18,39 +19,44 @@ type LoginFormInputs = z.infer<typeof loginSchema>;
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/kyc";
+
+  const { isLoading, error, isSuccess } = useAppSelector((state) => state.auth);
+
   const { showToast } = useToast();
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isValid },
   } = useForm<LoginFormInputs>({
     resolver: zodResolver(loginSchema),
     mode: "onChange",
   });
 
-  const onSubmit = async (data: LoginFormInputs) => {
-    try {
-      const tokenResponse = await authApi.login({
-        email: data.email,
-        password: data.password,
-      });
-
-      localStorage.setItem("accessToken", tokenResponse.data.accessToken);
-      
-
+  useEffect(() => {
+    if (isSuccess) {
       showToast(ToastStatus.Success, "Success", "Login successfully!");
-
-      navigate("/");
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.message || "Login failed";
-      showToast(ToastStatus.Error, "Error", errorMessage);
+      dispatch(resetAuthStatus());
+      navigate(from, { replace: true });
     }
+
+    if (error) {
+      showToast(ToastStatus.Error, "Error", error);
+      dispatch(resetAuthStatus());
+    }
+  }, [isSuccess, error, navigate, dispatch]);
+
+  const onSubmit = async (data: LoginFormInputs) => {
+    dispatch(loginUser(data));
   };
 
   return (
-    <div className="bg-gray-100 flex items-center justify-center min-h-screen">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold text-center text-gray-900">
+    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-md">
+        <h2 className="text-center text-2xl font-bold text-gray-900">
           Login to Your Account
         </h2>
         <form className="mt-6" onSubmit={handleSubmit(onSubmit)}>
@@ -71,7 +77,7 @@ const Login = () => {
               error={errors?.password?.message}
             />
           </div>
-          <div className="flex items-center justify-between mb-4">
+          <div className="mb-4 flex items-center justify-between">
             <label className="flex items-center">
               <input
                 type="checkbox"
@@ -86,14 +92,12 @@ const Login = () => {
           <button
             type="submit"
             disabled={!isValid}
-            className="w-full px-4 py-2 text-white bg-blue-600 rounded-md 
-             hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 font-semibold
-             disabled:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-70"
+            className="w-full rounded-md bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-400 disabled:opacity-70"
           >
-            {isSubmitting ? <ProgressSpinner /> : "Login"}
+            {isLoading ? "Logging in ..." : "Login"}
           </button>
         </form>
-        <p className="mt-4 text-sm text-center text-gray-600">
+        <p className="mt-4 text-center text-sm text-gray-600">
           Don't have an account?
           <Link
             to={publicRoute.register.path}

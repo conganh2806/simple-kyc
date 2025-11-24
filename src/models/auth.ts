@@ -4,8 +4,8 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
+  access_token: string;
+  refresh_token: string;
 }
 
 export interface RegisterRequest {
@@ -20,4 +20,12 @@ export interface RegisterResponse {
   avatar: string;
   role: string;
   id: 24;
+}
+
+export interface UserProfile {
+  id: number;
+  email: string;
+  name: string;
+  role: string;
+  avatar: string;
 }
