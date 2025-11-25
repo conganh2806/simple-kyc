@@ -41,6 +41,28 @@ export const addressTypes = [
   { label: "Mailing", value: "mailing" },
 ];
 
+export const emailTypes = [
+  { label: "Work", value: "work" },
+  { label: "Personal", value: "personal" },
+];
+
+export const phoneType = [
+  { label: "Mobile", value: "mobile" },
+  { label: "Home", value: "home" },
+  { label: "Work", value: "work" },
+];
+
+export const yesNoTypes = [
+  { label: "Yes", value: "yes" },
+  { label: "No", value: "no" },
+];
+
+export const documentTypes = [
+  { label: "Passport", value: "passport" },
+  { label: "National ID", value: "nationalId" },
+  { label: "Driver License", value: "driverLicense" },
+];
+
 // Address
 export interface AddressItem {
   country: string;

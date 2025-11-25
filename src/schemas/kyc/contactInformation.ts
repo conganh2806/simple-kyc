@@ -16,9 +16,13 @@ export const addressSchema = z.object({
 const EMAIL_TYPES = ["personal", "work"] as const;
 const EmailTypeEnum = z.enum(EMAIL_TYPES);
 
+const PREFERRED_TYPES = ["yes", "no"] as const;
+const PreferredTypeEnums = z.enum(PREFERRED_TYPES);
+
 const emailItemSchema = z.object({
-  address: z.email("Invalid email address"),
+  email: z.email("Invalid email address"),
   type: EmailTypeEnum,
+  preferred: PreferredTypeEnums,
 });
 
 // --- 3. PHONE SCHEMA ---
@@ -28,6 +32,7 @@ const PhoneTypeEnum = z.enum(PHONE_TYPES);
 const phoneItemSchema = z.object({
   number: z.string().min(10, "Phone number must be at least 10 digits"),
   type: PhoneTypeEnum,
+  preferred: PreferredTypeEnums,
 });
 
 export const contactInfoSchema = z.object({
@@ -35,4 +40,7 @@ export const contactInfoSchema = z.object({
   emails: z.array(emailItemSchema).min(1, "At least one email is required"),
   phones: z.array(phoneItemSchema).min(1, "At least one phone is required"),
 });
+
 export type AddressFormValues = z.infer<typeof addressSchema>;
+export type EmailFormValues = z.infer<typeof emailItemSchema>;
+export type PhoneFormValues = z.infer<typeof phoneItemSchema>;
