@@ -1,10 +1,9 @@
 import { Button } from "primereact/button";
-import { Dropdown } from "primereact/dropdown";
-import { InputText } from "primereact/inputtext";
-import { Controller, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { addressTypes } from "../models/kyc";
 import Input from "./Input";
 import type { KYCFormValues } from "../schemas/kyc";
+import FormDropdown from "./FormDropdown";
 
 interface AddressCardProps {
   index: number;
@@ -72,23 +71,13 @@ const AddressCard = ({ index, onRemove }: AddressCardProps) => {
           })}
           error={errors.contactInfo?.addresses?.[index]?.city?.message}
         />
-        <div className="flex flex-col gap-2">
-          <label className="text-sm">Type *</label>
-          <Controller
-            name={`contactInfo.addresses.${index}.type`}
-            control={control}
-            render={({ field, fieldState }) => (
-              <Dropdown
-                id={field.name}
-                value={field.value}
-                onChange={(e) => field.onChange(e.value)}
-                options={addressTypes}
-                placeholder="Select address type"
-                className={`w-full ${fieldState.invalid ? "p-invalid" : ""}`}
-              />
-            )}
-          />
-        </div>
+        <FormDropdown
+          name={`contactInfo.addresses.${index}.type`}
+          control={control}
+          label="Type *"
+          options={addressTypes}
+          placeholder="Select type"
+        />
       </div>
     </div>
   );

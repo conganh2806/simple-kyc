@@ -35,7 +35,7 @@ const Register = () => {
   const dispatch = useAppDispatch();
 
   const { isLoading, error, isSuccess } = useSelector(
-    (state: RootState) => state.auth
+    (state: RootState) => state.auth,
   );
 
   const { showToast } = useToast();
@@ -57,7 +57,7 @@ const Register = () => {
       showToast(
         ToastStatus.Success,
         "Success",
-        "Registration successful! Please login."
+        "Registration successful! Please login.",
       );
 
       dispatch(resetAuthStatus());
@@ -76,22 +76,22 @@ const Register = () => {
       registerUser({
         email: data.email,
         password: data.password,
-      })
+      }),
     );
   };
 
   return (
-    <div className="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-4">
-      <div className="flex items-center gap-3 mb-11">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 p-4">
+      <div className="mb-11 flex items-center gap-3">
         <img
           src={logoImage}
           alt="Simple KYC logo"
-          className="w-10 h-10 object-contain"
+          className="h-10 w-10 object-contain"
         ></img>
-        <span className="text-2xl ">Sign-up for Simple KYC</span>
+        <span className="text-2xl">Sign-up for Simple KYC</span>
       </div>
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold text-left text-gray-900">
+      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-md">
+        <h2 className="text-left text-2xl font-bold text-gray-900">
           Create a Free Account
         </h2>
         <form className="mt-6" onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -117,7 +117,7 @@ const Register = () => {
             {...register("confirmPassword")}
             error={errors?.confirmPassword?.message}
           />
-          <div className="flex items-center justify-between mb-4">
+          <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center">
               <Controller
                 name="terms"
@@ -133,7 +133,7 @@ const Register = () => {
               />
               <label
                 htmlFor="terms"
-                className="ml-2 text-sm text-gray-600 cursor-pointer select-none"
+                className="ml-2 cursor-pointer text-sm text-gray-600 select-none"
               >
                 I accept the Terms and Conditions
               </label>
@@ -142,14 +142,12 @@ const Register = () => {
           <button
             type="submit"
             disabled={!isValid}
-            className="w-full px-4 py-2 text-white bg-blue-600 rounded-md 
-             hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 font-semibold
-             disabled:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-70"
+            className="w-full rounded-md bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-400 disabled:opacity-70"
           >
             {isLoading ? "Creating Account..." : "Create account"}
           </button>
         </form>
-        <p className="mt-4 text-sm text-center text-gray-600">
+        <p className="mt-4 text-center text-sm text-gray-600">
           Already have an account?
           <Link
             to={publicRoute.login.path}
