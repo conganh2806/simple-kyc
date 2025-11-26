@@ -38,7 +38,7 @@ const AddressCard = ({ index, onRemove }: AddressCardProps) => {
           label="Country *"
           placeholder="United States"
           {...register(`contactInfo.addresses.${index}.country`, {
-            required: "First Name is required",
+            required: "Country is required",
           })}
           error={errors.contactInfo?.addresses?.[index]?.country?.message}
           className="mt-7"

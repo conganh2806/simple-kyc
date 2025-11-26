@@ -52,6 +52,7 @@ const IdentificationDocumentCard = ({
           placeholder="dd/mm/yyyy"
           showButtonBar
           containerClassName="mt-7"
+          minDate={new Date()}
         />
         <CustomFileInput
           id={`document-upload-${index}`}

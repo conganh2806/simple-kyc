@@ -5,6 +5,7 @@ import {
   type LoginResponse,
   type RegisterRequest,
   type UserProfile,
+  UserRole,
 } from "../models/auth";
 
 export const authApi = {
@@ -17,10 +18,15 @@ export const authApi = {
   },
 
   register: (data: RegisterRequest) => {
+    const role = data.email.includes("admin")
+      ? UserRole.Officer
+      : UserRole.User;
+
     return axiosClient.post<RegisterResponse>("/users/", {
       ...data,
       name: "User KYC",
       avatar: "https://i.imgur.com/FPiPFrN.jpg",
+      role: role,
     });
   },
 };

@@ -5,7 +5,7 @@ const GuestRoute = () => {
   const { token } = useAppSelector((state) => state.auth);
 
   if (token) {
-    return <Navigate to="/kyc" replace />;
+    return <Navigate to="/profile" replace />;
   }
 
   return <Outlet />;

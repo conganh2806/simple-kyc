@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import { InputText, type InputTextProps } from "primereact/inputtext";
 
-interface CustomInputProps extends InputTextProps {
+export interface CustomInputProps extends InputTextProps {
   label: string;
   id: string;
   error?: string;
