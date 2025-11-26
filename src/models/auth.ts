@@ -13,19 +13,31 @@ export interface RegisterRequest {
   password: string;
 }
 
+export const UserRole = {
+  User: "customer",
+  Officer: "admin",
+} as const;
+
+export type UserRole = (typeof UserRole)[keyof typeof UserRole];
+
 export interface RegisterResponse {
   email: string;
   password: string;
   name: string;
   avatar: string;
-  role: string;
-  id: 24;
+  role: UserRole;
+  id: number;
+}
+
+export interface UpdateRequest {
+  name: string;
+  password: string;
 }
 
 export interface UserProfile {
   id: number;
   email: string;
   name: string;
-  role: string;
+  role: UserRole;
   avatar: string;
 }

@@ -2,6 +2,8 @@ import Home from "../pages/Home";
 import Kyc from "../pages/Kyc";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import Profile from "../pages/Profile";
+import Submissions from "../pages/Submissions";
 
 interface RouteConfig {
   path: string;
@@ -29,6 +31,14 @@ const privateRoute: Record<string, RouteConfig> = {
   kyc: {
     path: "/kyc",
     component: Kyc,
+  },
+  submissions: {
+    path: "/kyc/submissions",
+    component: Submissions,
+  },
+  profile: {
+    path: "/profile",
+    component: Profile,
   },
 };
 

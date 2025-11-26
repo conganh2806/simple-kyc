@@ -19,7 +19,7 @@ export const DEFAULT_EMAIL: EmailFormValues = {
 };
 
 export const DEFAULT_DOCUMENT: DocumentFormValue = {
-  type: "Passport",
-  expiryDate: new Date(),
-  uploadDocument: new File([], ""),
+  type: "passport",
+  expiryDate: "",
+  uploadDocument: undefined as unknown as FileList,
 };

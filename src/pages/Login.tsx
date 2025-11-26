@@ -22,7 +22,7 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
 
-  const from = location.state?.from?.pathname || "/kyc";
+  const from = location.state?.from?.pathname || "/profile";
 
   const { isLoading, error, isSuccess } = useAppSelector((state) => state.auth);
 

@@ -63,6 +63,12 @@ export const documentTypes = [
   { label: "Driver License", value: "driverLicense" },
 ];
 
+export interface KycSubmissionData extends KYCItem {
+  id: number;
+  status?: "approved" | "pending" | "rejected";
+  createdAt?: string;
+}
+
 // Address
 export interface AddressItem {
   country: string;
@@ -131,4 +137,6 @@ export interface KYCItem {
     experience: string;
     riskTolerance: string;
   };
+
+  approved?: boolean;
 }

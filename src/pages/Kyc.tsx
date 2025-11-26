@@ -1,14 +1,12 @@
 import { useForm, FormProvider } from "react-hook-form";
 import { Button } from "primereact/button";
-
 import BasicInfoSection from "../components/kyc/BasicInfoSection";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { kycSchema, type KYCFormValues } from "../schemas/kyc";
 import ContactInformationSection from "../components/kyc/ContactInformationSection";
 import { useToast } from "../contexts/ToastContext";
-
-import supabase from "../services/supabaseClient";
 import IdentificationDocumentsSection from "../components/kyc/IdentificationDocumentsSection";
+import { kycService } from "../services/kycService";
 
 const Kyc = () => {
   const { showToast } = useToast();
@@ -53,54 +51,7 @@ const Kyc = () => {
   const onSubmit = async (data: KYCFormValues) => {
     console.log("KYC Data Submitted:", data);
     try {
-      // 1. Upload documents
-      const updatedDocuments = await Promise.all(
-        data.identificationDocuments.map(async (doc) => {
-          if (doc.uploadDocument && doc.uploadDocument.length > 0) {
-            const file = doc.uploadDocument[0];
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${Math.random()}.${fileExt}`;
-            const filePath = `${fileName}`;
-
-            const { error: uploadError } = await supabase.storage
-              .from('kyc-documents')
-              .upload(filePath, file);
-
-            if (uploadError) {
-              throw uploadError;
-            }
-
-            const { data: { publicUrl } } = supabase.storage
-              .from('kyc-documents')
-              .getPublicUrl(filePath);
-
-            return {
-              ...doc,
-              documentUrl: publicUrl,
-              uploadDocument: undefined
-            };
-          }
-          return doc;
-        })
-      );
-
-      const payload = {
-        ...data,
-        identificationDocuments: updatedDocuments
-      };
-
-      const { error } = await supabase
-        .from('kyc_records')
-        .insert([
-          {
-            first_name: data.basicInfo.firstName,
-            last_name: data.basicInfo.lastName,
-            payload: payload
-          },
-        ]);
-
-      if (error) throw error;
-
+      await kycService.submitKyc(data);
       showToast("success", "Success", "Save kyc information successfully!");
     } catch (error) {
       console.error("Error saving KYC:", error);
@@ -114,7 +65,7 @@ const Kyc = () => {
 
   return (
     <FormProvider {...methods}>
-      <div className="min-h-screen bg-gray-50 py-10">
+      <div className="min-h-screen bg-gray-50">
         <div className="mx-auto mt-11 max-w-5xl">
           <h2 className="mb-8 text-center text-3xl font-bold text-blue-600">
             Financial Status KYC
