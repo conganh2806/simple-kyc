@@ -1,0 +1,111 @@
+{
+  "kyc": [
+    {
+      "id": "0b25",
+      "status": "approved",
+      "createdAt": "2024-12-01",
+      "basicInfo": {
+        "firstName": "Nguyen",
+        "lastName": "Anh",
+        "middleName": "Cong",
+        "dateOfBirth": "2002-06-27T17:00:00.000Z",
+        "age": 23
+      },
+      "contactInfo": {
+        "addresses": [
+          {
+            "country": "Vietnam",
+            "city": "50000",
+            "street": "K351/8B, Chinh Gian Ward, Thanh Khe District",
+            "postalCode": "",
+            "type": "home"
+          }
+        ],
+        "emails": [
+          {
+            "email": "ncanh2806@gmail.com",
+            "type": "personal",
+            "preferred": "yes"
+          }
+        ],
+        "phones": [
+          {
+            "number": "0931222222",
+            "type": "mobile",
+            "preferred": "yes"
+          }
+        ]
+      },
+      "identificationDocuments": [
+        {
+          "type": "passport",
+          "expiryDate": "2026-01-20T17:00:00.000Z",
+          "documentUrl": "https://wtmsvpdsexzfflosjksn.supabase.co/storage/v1/object/public/kyc-documents/1764153547260_0.8303652852476977.pdf"
+        }
+      ],
+      "approved": false
+    },
+    {
+      "id": "fae2",
+      "basicInfo": {
+        "firstName": "Nguyen",
+        "lastName": "Vy",
+        "middleName": "Quynh",
+        "dateOfBirth": "2004-06-12T17:00:00.000Z",
+        "age": 21
+      },
+      "contactInfo": {
+        "addresses": [
+          {
+            "country": "Viet Nam",
+            "city": "550000",
+            "street": "Le Duan",
+            "postalCode": "",
+            "type": "home"
+          }
+        ],
+        "emails": [
+          {
+            "email": "nnn@gmail.com",
+            "type": "work",
+            "preferred": "yes"
+          }
+        ],
+        "phones": [
+          {
+            "number": "0905953371",
+            "type": "mobile",
+            "preferred": "yes"
+          }
+        ]
+      },
+      "identificationDocuments": [
+        {
+          "type": "nationalId",
+          "expiryDate": "2026-08-25T17:00:00.000Z",
+          "documentUrl": "https://wtmsvpdsexzfflosjksn.supabase.co/storage/v1/object/public/kyc-documents/1764172409658_0.2894463064486267.pdf"
+        }
+      ],
+      "approved": false,
+      "status": "rejected"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "email": "user@test.com",
+      "password": "123456",
+      "name": "Normal User",
+      "role": "customer",
+      "avatar": "https://i.imgur.com/FPiPFrN.jpg"
+    },
+    {
+      "id": "2",
+      "email": "officer@test.com",
+      "password": "123456",
+      "name": "Officer User",
+      "role": "admin",
+      "avatar": "https://i.imgur.com/FPiPFrN.jpg"
+    }
+  ]
+}

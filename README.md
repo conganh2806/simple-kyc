@@ -1,73 +1,132 @@
-# React + TypeScript + Vite
+# Simple KYC
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Lightweight KYC (Know Your Customer) demo app built with React + TypeScript + Vite.  
+Implements auth, a multi-step KYC form with validation and file uploads, a local JSON server (mock API), and Supabase storage integration.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Folder structures:
 
-## React Compiler
-
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+simple-kyc/
+├─ .env                     # env vars (VITE_API_URL, VITE_JSON_SERVER_URL, Supabase keys)
+├─ package.json             # scripts, deps
+├─ tsconfig.json
+├─ vite.config.ts
+├─ README.md
+├─ db.json                  # json-server mock DB
+├─ public/                  # static assets served by Vite
+└─ src/
+   ├─ main.tsx              # app entry (mount react)
+   ├─ App.tsx               # top-level routes/layout
+   ├─ index.css / styles/   # global styles
+   ├─ assets/               # images/icons/fonts
+   ├─ app/
+   │  ├─ store.ts           # redux store configuration
+   │  └─ hooks.ts           # typed hooks (useAppDispatch/useAppSelector)
+   ├─ features/             # redux slices + feature logic
+   │  ├─ auth/
+   │  │  └─ authSlice.ts    # login/register state & thunks
+   │  └─ user/
+   │     └─ userSlice.ts    # profile updates
+   ├─ pages/                # route-level page components
+   │  ├─ Login.tsx
+   │  ├─ Register.tsx
+   │  ├─ Kyc.tsx            # multi-step KYC form
+   │  ├─ Profile.tsx
+   │  └─ Submissions.tsx    # admin view for json-server records
+   ├─ components/           # reusable UI pieces (forms, buttons, inputs)
+   ├─ services/             # API & third-party integrations
+   │  ├─ axiosClient.ts     # axios instances (base + json-server)
+   │  ├─ kycService.ts      # kyc submission endpoints
+   │  └─ supabaseClient.ts  # supabase init + upload helpers
+   ├─ schemas/              # zod schemas / validation logic
+   │  ├─ kyc/               # per-step schemas
+   │  └─ auth.ts
+   ├─ utils/                # small helpers and formatters
+   └─ types/                # shared TypeScript types/interfaces
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Key features
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Multi-step KYC form with client-side validation (Zod + react-hook-form).
+- Document uploads to Supabase.
+- Auth + profile flows using Redux Toolkit.
+- Local mock API using json-server for development and testing.
+- Example data stored in `db.json`.
+
+---
+
+## Quick start
+
+Prerequisites:
+
+- Node.js 18+
+- npm
+
+Install dependencies:
+
+```bash
+npm install
 ```
+
+Start development:
+
+- Run Vite dev server:
+
+```bash
+npm run dev
+```
+
+- Run mock JSON API (in a separate terminal):
+
+```bash
+npm run server
+```
+
+Build and preview:
+
+```bash
+npm run build
+npm run preview
+```
+
+Lint:
+
+```bash
+npm run lint
+```
+
+---
+
+## Environment variables
+
+Ensure `.env` contains:
+
+- VITE_API_URL — external API base (optional)
+- VITE_JSON_SERVER_URL — json-server URL (default: http://localhost:3001)
+- VITE_SUPABASE_URL — Supabase project URL
+- VITE_SUPABASE_ANON_KEY — Supabase anon key
+
+See `.env.example` for example values.
+
+---
+
+## Important files / folders
+
+- App entry: `src/main.tsx`, `src/App.tsx`
+- Pages: `src/pages/*` (Kyc, Login, Register, Profile, Submissions)
+- Services: `src/services/*` (axios client, kycService, supabase client)
+- Validation schemas: `src/schemas/*`
+- Redux: `src/app/store.ts`, `src/features/*`
+
+---
+
+## Notes for contributors
+
+- KYC form validation and shape live under `src/schemas/kyc`.
+- KYC submissions are sent to the local json-server and stored in `db.json`.
+- To test file uploads, configure Supabase credentials in `.env`.
+- Suggested additions: CONTRIBUTING.md, CODE_OF_CONDUCT, CI badges.
