@@ -7,6 +7,12 @@ import ContactInformationSection from "../components/kyc/ContactInformationSecti
 import { useToast } from "../contexts/ToastContext";
 import IdentificationDocumentsSection from "../components/kyc/IdentificationDocumentsSection";
 import { kycService } from "../services/kycService";
+import { DOCUMENT_KEYS } from "../models/kyc";
+import {
+  DEFAULT_ADDRESS,
+  DEFAULT_EMAIL,
+  DEFAULT_PHONE,
+} from "../models/defaultKycValue";
 
 const Kyc = () => {
   const { showToast } = useToast();
@@ -20,27 +26,13 @@ const Kyc = () => {
         dateOfBirth: "",
       },
       contactInfo: {
-        addresses: [
-          {
-            country: "",
-            city: "",
-            street: "",
-            type: "home",
-            postalCode: "",
-          },
-        ],
-        emails: [
-          {
-            email: "",
-            type: "personal",
-            preferred: "yes",
-          },
-        ],
-        phones: [{ number: "", type: "mobile", preferred: "yes" }],
+        addresses: [DEFAULT_ADDRESS],
+        emails: [DEFAULT_EMAIL],
+        phones: [DEFAULT_PHONE],
       },
       identificationDocuments: [
         {
-          type: "passport",
+          type: DOCUMENT_KEYS[0],
           expiryDate: "",
           uploadDocument: undefined,
         },

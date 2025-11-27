@@ -3,13 +3,26 @@ import { Card } from "primereact/card";
 import Input from "../Input";
 import { type KYCFormValues } from "../../schemas/kyc";
 import FormCalendar from "../FormCalendar";
+import { useEffect } from "react";
+import { calculateAge } from "../../utils/dateUtils";
 
 const BasicInfoSection = () => {
   const {
     register,
+    watch,
+    setValue,
     control,
     formState: { errors },
   } = useFormContext<KYCFormValues>();
+
+  const dob = watch("basicInfo.dateOfBirth");
+
+  useEffect(() => {
+    if (dob) {
+      const age = calculateAge(dob);
+      setValue("basicInfo.age", age, { shouldValidate: true });
+    }
+  }, [dob, setValue]);
 
   return (
     <Card title="Basic Information" className="shadow-sm">
@@ -58,6 +71,7 @@ const BasicInfoSection = () => {
           })}
           error={errors.basicInfo?.age?.message}
           variant="filled"
+          disabled
         />
       </div>
     </Card>

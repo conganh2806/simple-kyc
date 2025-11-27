@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { DOCUMENT_KEYS } from "../../models/kyc";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ACCEPTED_IMAGE_TYPES = [
@@ -9,10 +10,8 @@ const ACCEPTED_IMAGE_TYPES = [
   "application/pdf",
 ];
 
-const DOCUMENT_TYPES = ["passport", "nationalId", "driverLicense"] as const;
-
 export const identificationDocumentSchema = z.object({
-  type: z.enum(DOCUMENT_TYPES, {
+  type: z.enum(DOCUMENT_KEYS, {
     error: "Please select a valid document type",
   }),
   expiryDate: z.iso.datetime(),

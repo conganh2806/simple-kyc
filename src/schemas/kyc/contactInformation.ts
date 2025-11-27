@@ -1,9 +1,13 @@
 import z from "zod";
+import {
+  ADDRESS_TYPE_KEYS,
+  EMAIL_KEYS,
+  PHONE_KEYS,
+  YES_NO_KEYS,
+} from "../../models/kyc";
 
 // --- 1. ADDRESS SCHEMA ---
-const ADDRESS_VALUES = ["home", "office", "billing", "mailing"] as const;
-const AddressTypeEnum = z.enum(ADDRESS_VALUES);
-
+const AddressTypeEnum = z.enum(ADDRESS_TYPE_KEYS);
 export const addressSchema = z.object({
   country: z.string().min(1, "Country is required"),
   city: z.string().min(1, "City is required"),
@@ -13,12 +17,8 @@ export const addressSchema = z.object({
 });
 
 // --- 2. EMAIL SCHEMA ---
-const EMAIL_TYPES = ["personal", "work"] as const;
-const EmailTypeEnum = z.enum(EMAIL_TYPES);
-
-const PREFERRED_TYPES = ["yes", "no"] as const;
-const PreferredTypeEnums = z.enum(PREFERRED_TYPES);
-
+const EmailTypeEnum = z.enum(EMAIL_KEYS);
+const PreferredTypeEnums = z.enum(YES_NO_KEYS);
 const emailItemSchema = z.object({
   email: z.email("Invalid email address"),
   type: EmailTypeEnum,
@@ -26,9 +26,7 @@ const emailItemSchema = z.object({
 });
 
 // --- 3. PHONE SCHEMA ---
-const PHONE_TYPES = ["mobile", "home", "work"] as const;
-const PhoneTypeEnum = z.enum(PHONE_TYPES);
-
+const PhoneTypeEnum = z.enum(PHONE_KEYS);
 const phoneItemSchema = z.object({
   number: z.string().min(10, "Phone number must be at least 10 digits"),
   type: PhoneTypeEnum,

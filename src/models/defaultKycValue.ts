@@ -1,8 +1,10 @@
 import type {
   AddressFormValues,
   EmailFormValues,
+  PhoneFormValues,
 } from "../schemas/kyc/contactInformation";
 import type { DocumentFormValue } from "../schemas/kyc/identificationDocuments";
+import { DOCUMENT_KEYS, EMAIL_KEYS, PHONE_KEYS } from "./kyc";
 
 export const DEFAULT_ADDRESS: AddressFormValues = {
   country: "",
@@ -14,12 +16,18 @@ export const DEFAULT_ADDRESS: AddressFormValues = {
 
 export const DEFAULT_EMAIL: EmailFormValues = {
   email: "",
-  type: "work",
+  type: EMAIL_KEYS[0],
   preferred: "yes",
 };
 
 export const DEFAULT_DOCUMENT: DocumentFormValue = {
-  type: "passport",
+  type: DOCUMENT_KEYS[0],
   expiryDate: "",
   uploadDocument: undefined as unknown as FileList,
+};
+
+export const DEFAULT_PHONE: PhoneFormValues = {
+  number: "",
+  type: PHONE_KEYS[0],
+  preferred: "yes",
 };
