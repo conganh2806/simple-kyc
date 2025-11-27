@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import z from "zod";
 import Input from "../components/Input";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { publicRoute } from "../routes/routes";
@@ -9,13 +8,7 @@ import { ToastStatus } from "../constants/Toast";
 import { useAppDispatch, useAppSelector } from "../app/store";
 import { useEffect } from "react";
 import { loginUser, resetAuthStatus } from "../features/auth/authSlice";
-
-const loginSchema = z.object({
-  email: z.email({ pattern: z.regexes.email }),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
-
-type LoginFormInputs = z.infer<typeof loginSchema>;
+import { loginSchema, type LoginFormInputs } from "../schemas/auth";
 
 const Login = () => {
   const navigate = useNavigate();

@@ -13,22 +13,7 @@ import { useEffect } from "react";
 import { registerUser, resetAuthStatus } from "../features/auth/authSlice";
 import { type RootState } from "../app/store";
 import { useSelector } from "react-redux";
-
-const registerSchema = z
-  .object({
-    email: z.email({ pattern: z.regexes.email }),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: z.string().min(1, "Confirm Password is required"),
-    terms: z.boolean().refine((val) => val === true, {
-      message: "You must accept the terms",
-    }),
-  })
-  .refine((data) => data.password == data.confirmPassword, {
-    error: "Password don't match",
-    path: ["confirmPassword"],
-  });
-
-type RegisterFormInputs = z.infer<typeof registerSchema>;
+import { registerSchema, type RegisterFormInputs } from "../schemas/auth";
 
 const Register = () => {
   const navigate = useNavigate();
