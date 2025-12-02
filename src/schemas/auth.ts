@@ -5,8 +5,6 @@ export const loginSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-const SPECIAL_CHARS_REGEX = /[@#&!]/;
-
 export const registerSchema = z
   .object({
     email: z.email({ pattern: z.regexes.email }),
@@ -17,11 +15,7 @@ export const registerSchema = z
       .max(16, "Password must be at most 16 characters")
       .regex(/[a-z]/, "Password must contain at least one lowercase letter")
       .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-      .regex(/[0-9]/, "Password must contain at least one number")
-      .regex(
-        SPECIAL_CHARS_REGEX,
-        "Password must contain at least one special char (@, #, &, !)",
-      ),
+      .regex(/[0-9]/, "Password must contain at least one number"),
     confirmPassword: z.string().min(1, "Confirm Password is required"),
     terms: z.boolean().refine((val) => val === true, {
       message: "You must accept the terms",
