@@ -4,7 +4,8 @@ import type {
   PhoneFormValues,
 } from "../schemas/kyc/contactInformation";
 import type { DocumentFormValue } from "../schemas/kyc/identificationDocuments";
-import { DOCUMENT_KEYS, EMAIL_KEYS, PHONE_KEYS } from "./kyc";
+import type { OccupationFormValues } from "../schemas/kyc/occupation";
+import { DOCUMENT_KEYS, EMAIL_KEYS, OCCUPATION_KEYS, PHONE_KEYS } from "./kyc";
 
 export const DEFAULT_ADDRESS: AddressFormValues = {
   country: "",
@@ -30,4 +31,10 @@ export const DEFAULT_PHONE: PhoneFormValues = {
   number: "",
   type: PHONE_KEYS[0],
   preferred: "yes",
+};
+
+export const DEFAULT_OCCUPATION_TYPE: OccupationFormValues = {
+  occupation: OCCUPATION_KEYS[0],
+  fromDate: "",
+  toDate: undefined,
 };

@@ -63,6 +63,11 @@ export const YES_NO_KEYS = ["yes", "no"] as const;
 export type YesNoType = (typeof YES_NO_KEYS)[number];
 export const yesNoTypes = createOptions(YES_NO_KEYS);
 
+// --- OCCUPATION ---
+export const OCCUPATION_KEYS = ["unemployed", "employed"] as const;
+export type OccupationType = (typeof OCCUPATION_KEYS)[number];
+export const occupationType = createOptions(OCCUPATION_KEYS);
+
 // --- EXPERIENCE (Map) ---
 export const EXPERIENCE_MAP = {
   "<5-years": "< 5 years",

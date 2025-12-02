@@ -17,7 +17,13 @@ const Submissions = () => {
     const fetchData = async () => {
       try {
         const response = await kycService.getAllSubmissions();
-        const sortedData = response.data.sort((a: any, b: any) => b.id - a.id);
+        const sortedData = response.data.sort(
+          (a: KycSubmissionData, b: KycSubmissionData) => {
+            const dateA = new Date(a.createdAt || 0).getTime();
+            const dateB = new Date(b.createdAt || 0).getTime();
+            return dateB - dateA;
+          },
+        );
         setSubmissions(sortedData);
       } catch (error) {
         console.error("Failed to fetch submissions", error);
@@ -44,7 +50,7 @@ const Submissions = () => {
         "Success",
         `KYC request ${status} successfully`,
       );
-    } catch (error) {
+    } catch {
       showToast("error", "Error", "Failed to update status");
     }
   };
@@ -96,7 +102,7 @@ const Submissions = () => {
           label="Approve"
           size="small"
           severity="success"
-          outlined // Style viền (giống ảnh cũ)
+          outlined
           className="text-xs font-bold"
           onClick={() => handleAction(rowData.id, "approved")}
           disabled={rowData.status === "approved"}
@@ -162,7 +168,15 @@ const Submissions = () => {
               field="createdAt"
               header="DATE"
               sortable
-              body={(row) => row.createdAt || "2024-12-01"}
+              body={(row) => {
+                if (!row.createdAt) return "-";
+
+                return new Date(row.createdAt).toLocaleDateString("vi-VN", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                });
+              }}
               style={{ width: "20%" }}
             ></Column>
 
