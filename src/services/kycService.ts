@@ -4,11 +4,13 @@ import { type KYCFormValues } from "../schemas/kyc";
 import { type KycSubmissionData } from "../models/kyc";
 
 export const kycService = {
-  uploadDocuments: async (documents: any[]) => {
+  uploadDocuments: async (
+    documents: KYCFormValues["identificationDocuments"],
+  ) => {
     const updatedDocuments = await Promise.all(
       documents.map(async (doc) => {
         if (doc.uploadDocument && doc.uploadDocument.length > 0) {
-          const file = doc.uploadDocument[0];
+          const file = doc.uploadDocument[0] as File;
           const fileExt = file.name.split(".").pop();
           const fileName = `${Date.now()}_${Math.random()}.${fileExt}`;
 
@@ -43,6 +45,7 @@ export const kycService = {
       ...data,
       identificationDocuments: documentsWithUrls,
       approved: false,
+      createdAt: new Date().toISOString(),
     };
 
     return jsonClient.post("/kyc", payload);

@@ -1,4 +1,4 @@
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, type FieldErrors } from "react-hook-form";
 import { Button } from "primereact/button";
 import BasicInfoSection from "../components/kyc/BasicInfoSection";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,8 +11,10 @@ import { DOCUMENT_KEYS } from "../models/kyc";
 import {
   DEFAULT_ADDRESS,
   DEFAULT_EMAIL,
+  DEFAULT_OCCUPATION_TYPE,
   DEFAULT_PHONE,
 } from "../models/defaultKycValue";
+import OccupationSection from "../components/kyc/OccupationSection";
 
 const Kyc = () => {
   const { showToast } = useToast();
@@ -37,6 +39,7 @@ const Kyc = () => {
           uploadDocument: undefined,
         },
       ],
+      occupation: DEFAULT_OCCUPATION_TYPE,
     },
   });
 
@@ -51,7 +54,7 @@ const Kyc = () => {
     }
   };
 
-  const onError = (errors: any) => {
+  const onError = (errors: FieldErrors) => {
     console.log("Form errors: ", errors);
   };
 
@@ -70,6 +73,7 @@ const Kyc = () => {
             <BasicInfoSection />
             <ContactInformationSection />
             <IdentificationDocumentsSection />
+            <OccupationSection />
 
             <div className="flex justify-end pt-4">
               <Button
